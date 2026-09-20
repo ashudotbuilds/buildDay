@@ -1,26 +1,37 @@
+@import url('https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
 @import "tailwindcss";
 
 :root {
-  --bg-app: #0a0d14;
-  --bg-card: #121824;
-  --bg-card-elevated: #182030;
-  --bg-chip: #1e293b;
-  --bg-chip-hover: #2d3b52;
-  --border-subtle: rgba(255, 255, 255, 0.08);
-  --border-active: rgba(245, 158, 11, 0.4);
+  --bg-app: #07080c;
+  --bg-card: #0e1117;
+  --bg-card-elevated: #141722;
+  --bg-card-hover: #1a1e2c;
+  --bg-input: #0b0d13;
+  --bg-chip: #141824;
+  --bg-chip-hover: #1f2537;
+  
+  --border-subtle: rgba(255, 255, 255, 0.07);
+  --border-prominent: rgba(255, 255, 255, 0.14);
+  --border-active: rgba(245, 158, 11, 0.45);
   
   --primary-amber: #f59e0b;
-  --primary-amber-glow: rgba(245, 158, 11, 0.2);
-  --accent-indigo: #6366f1;
+  --primary-amber-hover: #d97706;
+  --primary-amber-glow: rgba(245, 158, 11, 0.18);
+  --accent-gold: #fbbf24;
   --accent-emerald: #10b981;
   --accent-rose: #f43f5e;
   
   --text-main: #f8fafc;
   --text-muted: #94a3b8;
   --text-subtle: #64748b;
+
+  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-serif: 'Newsreader', Georgia, serif;
+
   --radius-sm: 8px;
   --radius-md: 14px;
-  --radius-lg: 20px;
+  --radius-lg: 22px;
+  --radius-xl: 30px;
   --radius-full: 9999px;
 }
 
@@ -34,37 +45,78 @@
 body {
   background-color: var(--bg-app);
   color: var(--text-main);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  font-family: var(--font-sans);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  align-items: center;
   overflow-x: hidden;
   line-height: 1.5;
   background-image: 
-    radial-gradient(ellipse at 50% 0%, rgba(99, 102, 241, 0.12) 0%, transparent 60%),
-    radial-gradient(ellipse at 80% 90%, rgba(245, 158, 11, 0.07) 0%, transparent 50%);
+    radial-gradient(ellipse at 50% -10%, rgba(245, 158, 11, 0.08) 0%, transparent 60%),
+    radial-gradient(ellipse at 85% 60%, rgba(217, 119, 6, 0.04) 0%, transparent 50%),
+    radial-gradient(ellipse at 15% 90%, rgba(255, 255, 255, 0.02) 0%, transparent 40%);
   background-attachment: fixed;
 }
 
-/* Base utility containers */
-.app-viewport {
-  width: 100%;
-  max-width: 520px;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  padding: 16px 20px 40px;
-  position: relative;
+/* Typography styles */
+.serif-italic {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
 }
 
-/* Glass Card */
+/* Responsive layout containers */
+.landing-container {
+  width: 100%;
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.flow-container {
+  width: 100%;
+  max-width: 620px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+/* Premium Glass & Bento Panels */
 .glass-panel {
   background: var(--bg-card);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-lg);
-  backdrop-filter: blur(16px);
-  box-shadow: 0 12px 32px -4px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(20px);
+  box-shadow: 0 16px 40px -10px rgba(0, 0, 0, 0.6);
+  position: relative;
+  overflow: hidden;
+}
+
+.glass-panel::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.12), transparent);
+  pointer-events: none;
+}
+
+.bento-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.bento-card:hover {
+  border-color: var(--border-prominent);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px -8px rgba(0, 0, 0, 0.45);
 }
 
 /* Interactive Pill & Chips */
@@ -75,7 +127,8 @@ body {
   background: var(--bg-chip);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-full);
-  font-size: 0.85rem;
+  font-size: 0.84rem;
+  font-weight: 500;
   color: var(--text-muted);
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
@@ -85,15 +138,15 @@ body {
 .chip:hover {
   background: var(--bg-chip-hover);
   color: var(--text-main);
-  border-color: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.18);
   transform: translateY(-1px);
 }
 
 .chip.active {
-  background: rgba(245, 158, 11, 0.15);
+  background: rgba(245, 158, 11, 0.14);
   border-color: var(--primary-amber);
   color: var(--primary-amber);
-  font-weight: 500;
+  font-weight: 600;
 }
 
 /* Primary Button */
@@ -101,23 +154,24 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 10px;
   width: 100%;
-  padding: 14px 20px;
+  padding: 15px 22px;
   background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-  color: #090d14;
-  font-weight: 600;
-  font-size: 1rem;
+  color: #07080c;
+  font-weight: 700;
+  font-size: 0.98rem;
+  letter-spacing: -0.01em;
   border: none;
   border-radius: var(--radius-md);
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 4px 16px rgba(245, 158, 11, 0.3);
+  box-shadow: 0 6px 20px rgba(245, 158, 11, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.3);
 }
 
 .btn-primary:hover:not(:disabled) {
-  transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(245, 158, 11, 0.4);
+  transform: translateY(-1.5px);
+  box-shadow: 0 8px 24px rgba(245, 158, 11, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.4);
   filter: brightness(1.05);
 }
 
@@ -126,7 +180,7 @@ body {
 }
 
 .btn-primary:disabled {
-  opacity: 0.5;
+  opacity: 0.55;
   cursor: not-allowed;
   box-shadow: none;
 }
@@ -136,20 +190,21 @@ body {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 12px 18px;
+  padding: 13px 20px;
   background: var(--bg-card-elevated);
   color: var(--text-main);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md);
   font-size: 0.92rem;
-  font-weight: 500;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .btn-secondary:hover {
   background: var(--bg-chip-hover);
-  border-color: rgba(255, 255, 255, 0.18);
+  border-color: var(--border-prominent);
+  color: #ffffff;
 }
 
 /* Radio Option Card */
@@ -170,40 +225,61 @@ body {
 .option-card:hover {
   border-color: rgba(255, 255, 255, 0.2);
   color: var(--text-main);
-  background: #1c263a;
+  background: #181d2a;
 }
 
 .option-card.selected {
-  background: rgba(245, 158, 11, 0.09);
+  background: rgba(245, 158, 11, 0.08);
   border-color: var(--primary-amber);
   color: var(--text-main);
-  box-shadow: 0 0 16px rgba(245, 158, 11, 0.12);
+  box-shadow: 0 0 18px rgba(245, 158, 11, 0.12);
 }
 
-/* Animations */
-@keyframes pulseGlow {
-  0%, 100% {
-    opacity: 0.6;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1.04);
-  }
-}
-
-.pulse-glow {
-  animation: pulseGlow 2.4s infinite ease-in-out;
-}
-
+/* Audio waveform animations */
 @keyframes waveBar {
   0%, 100% { height: 6px; }
   50% { height: 26px; }
 }
 
 .wave-bar {
-  width: 4px;
+  width: 3.5px;
   background-color: var(--primary-amber);
   border-radius: 99px;
   animation: waveBar 1.2s infinite ease-in-out;
+}
+
+/* Subtle glow badge */
+.badge-gold {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: var(--radius-full);
+  background: rgba(245, 158, 11, 0.1);
+  border: 1px solid rgba(245, 158, 11, 0.28);
+  color: var(--accent-gold);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+}
+
+/* Custom scrubber styling */
+input[type="range"] {
+  accent-color: var(--primary-amber);
+}
+
+/* Custom scrollbar for scripts */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-app);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--bg-chip-hover);
+  border-radius: 99px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--border-prominent);
 }

@@ -158,7 +158,7 @@ export default function Home() {
   };
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+    <>
       {screen === "input" && (
         <InputScreen
           onSubmitTopic={handleTopicSubmit}
@@ -167,43 +167,47 @@ export default function Home() {
         />
       )}
 
-      {screen === "questions" && (
-        <QuestionsScreen
-          topic={topic}
-          questions={questions}
-          onBack={() => setScreen("input")}
-          onGenerate={handleGenerate}
-          isGenerating={false}
-        />
-      )}
+      {screen !== "input" && (
+        <div className="flow-container">
+          {screen === "questions" && (
+            <QuestionsScreen
+              topic={topic}
+              questions={questions}
+              onBack={() => setScreen("input")}
+              onGenerate={handleGenerate}
+              isGenerating={false}
+            />
+          )}
 
-      {screen === "progress" && (
-        <ProgressScreen
-          currentStage={currentStage}
-          topic={topic}
-          minutes={selectedMinutes}
-        />
-      )}
+          {screen === "progress" && (
+            <ProgressScreen
+              currentStage={currentStage}
+              topic={topic}
+              minutes={selectedMinutes}
+            />
+          )}
 
-      {screen === "result" && (
-        <ResultScreen
-          lesson={lessonResult}
-          onNewLesson={() => {
-            setScreen("input");
-            setTopic("");
-            setQuestions([]);
-            setLessonResult(null);
-          }}
-        />
-      )}
+          {screen === "result" && (
+            <ResultScreen
+              lesson={lessonResult}
+              onNewLesson={() => {
+                setScreen("input");
+                setTopic("");
+                setQuestions([]);
+                setLessonResult(null);
+              }}
+            />
+          )}
 
-      {screen === "error" && (
-        <ErrorScreen
-          message={errorMsg}
-          onTryAgain={() => setScreen("input")}
-          onLoadDemo={handleLoadDemo}
-        />
+          {screen === "error" && (
+            <ErrorScreen
+              message={errorMsg}
+              onTryAgain={() => setScreen("input")}
+              onLoadDemo={handleLoadDemo}
+            />
+          )}
+        </div>
       )}
-    </div>
+    </>
   );
 }
