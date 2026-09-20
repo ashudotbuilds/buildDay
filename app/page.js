@@ -94,6 +94,7 @@ export default function Home() {
       const reader = response.body.getReader();
       const decoder = new TextDecoder();
       let buffer = "";
+      let currentEvent = null;
 
       while (true) {
         const { value, done } = await reader.read();
@@ -103,7 +104,6 @@ export default function Home() {
         const lines = buffer.split("\n");
         buffer = lines.pop() || "";
 
-        let currentEvent = null;
         for (const line of lines) {
           const trimmed = line.trim();
           if (trimmed.startsWith("event:")) {

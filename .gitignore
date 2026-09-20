@@ -5,3 +5,4 @@ node_modules/
 out/
 public/out/*.mp3
 public/demo/*.mp3node_modules
+.env.example

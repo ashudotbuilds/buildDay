@@ -1,9 +1,10 @@
+import fs from "node:fs/promises";
 import path from "node:path";
 import { generateLesson } from "../../../lib/pipeline.mjs";
 import { config } from "../../../lib/config.mjs";
 
 export const runtime = "nodejs";
-export const maxDuration = 300;
+export const maxDuration = 60;
 
 const allowedMinutes = new Set(config.allowedMinutes);
 
@@ -47,11 +48,21 @@ export async function POST(request) {
             if (stage !== "done") send(progressEvent(stage));
           },
         });
+
+        // Generate clean self-contained Data URI for seamless Vercel serverless playback
+        let audioUrl = `/out/${path.basename(result.audioFile)}`;
+        try {
+          const audioBuffer = await fs.readFile(result.audioFile);
+          audioUrl = `data:audio/mpeg;base64,${audioBuffer.toString("base64")}`;
+        } catch {
+          // Fall back to relative URL if file read fails
+        }
+
         send(
           progressEvent("done", {
             script: result.script,
             sources: result.sources,
-            audioUrl: `/out/${path.basename(result.audioFile)}`,
+            audioUrl,
           }),
         );
       } catch (error) {
