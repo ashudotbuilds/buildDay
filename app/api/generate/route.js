@@ -3,6 +3,7 @@ import { generateLesson } from "../../../lib/pipeline.mjs";
 import { config } from "../../../lib/config.mjs";
 
 export const runtime = "nodejs";
+export const maxDuration = 300;
 
 const allowedMinutes = new Set(config.allowedMinutes);
 
