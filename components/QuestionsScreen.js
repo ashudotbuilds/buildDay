@@ -9,9 +9,9 @@ const DURATION_OPTIONS = [
 ];
 
 const LANGUAGE_OPTIONS = [
-  { id: "en-IN-NeerjaNeural", name: "English", sub: "Indian" },
-  { id: "hi-IN-SwaraNeural", name: "Hindi", sub: "हिंदी" },
-  { id: "mr-IN-AarohiNeural", name: "Marathi", sub: "मराठी" },
+  { id: "en-IN-NeerjaNeural", name: "English", sub: "Indian", enabled: true },
+  { id: "hi-IN-SwaraNeural", name: "Hindi", sub: "हिंदी", enabled: false, badge: "Soon" },
+  { id: "mr-IN-AarohiNeural", name: "Marathi", sub: "मराठी", enabled: false, badge: "Soon" },
 ];
 
 export default function QuestionsScreen({
@@ -241,11 +241,15 @@ export default function QuestionsScreen({
         <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "8px" }}>
           {LANGUAGE_OPTIONS.map((lang) => {
             const active = selectedVoice === lang.id;
+            const disabled = !lang.enabled;
             return (
               <button
                 key={lang.id}
                 type="button"
-                onClick={() => setSelectedVoice(lang.id)}
+                disabled={disabled}
+                onClick={() => {
+                  if (!disabled) setSelectedVoice(lang.id);
+                }}
                 style={{
                   padding: "10px 6px",
                   borderRadius: "var(--radius-md)",
@@ -253,12 +257,38 @@ export default function QuestionsScreen({
                     ? "1.5px solid var(--primary-amber)"
                     : "1px solid var(--border-subtle)",
                   backgroundColor: active ? "rgba(245, 158, 11, 0.12)" : "var(--bg-app)",
-                  color: active ? "var(--text-main)" : "var(--text-muted)",
-                  cursor: "pointer",
+                  color: active
+                    ? "var(--text-main)"
+                    : disabled
+                    ? "var(--text-subtle)"
+                    : "var(--text-muted)",
+                  cursor: disabled ? "not-allowed" : "pointer",
+                  opacity: disabled ? 0.4 : 1,
                   textAlign: "center",
                   transition: "all 0.2s ease",
+                  position: "relative",
                 }}
               >
+                {lang.badge && (
+                  <span
+                    style={{
+                      position: "absolute",
+                      top: "-7px",
+                      right: "6px",
+                      fontSize: "0.58rem",
+                      fontWeight: 700,
+                      background: "var(--bg-card-elevated)",
+                      border: "1px solid var(--border-subtle)",
+                      color: "var(--text-subtle)",
+                      padding: "1px 6px",
+                      borderRadius: "99px",
+                      letterSpacing: "0.04em",
+                      textTransform: "uppercase",
+                    }}
+                  >
+                    {lang.badge}
+                  </span>
+                )}
                 <div style={{ fontSize: "0.85rem", fontWeight: 600 }}>{lang.name}</div>
                 <div style={{ fontSize: "0.7rem", color: active ? "var(--primary-amber)" : "var(--text-subtle)" }}>
                   {lang.sub}
