@@ -2,13 +2,6 @@
 
 import { useState, useRef } from "react";
 
-const COMMUTE_PRESETS = [
-  { icon: "🚇", label: "Metro Ride", time: "10 min", topic: "Why did the Roman Empire fall" },
-  { icon: "🚶", label: "Dog Walk", time: "5 min", topic: "How do vaccines work" },
-  { icon: "☕", label: "Coffee Run", time: "3 min", topic: "Quantum computing basics" },
-  { icon: "🏋️", label: "Gym Cooldown", time: "5 min", topic: "The 2008 financial crisis explained" },
-];
-
 const POPULAR_CHIPS = [
   "How do vaccines work",
   "Why did Rome fall",
@@ -47,11 +40,6 @@ export default function InputScreen({ onSubmitTopic, onLoadDemo, isLoading }) {
     e.preventDefault();
     if (!topic.trim() || isLoading) return;
     onSubmitTopic(topic.trim());
-  };
-
-  const handlePresetSelect = (preset) => {
-    setTopic(preset.topic);
-    onSubmitTopic(preset.topic);
   };
 
   const togglePreviewAudio = () => {
@@ -129,83 +117,21 @@ export default function InputScreen({ onSubmitTopic, onLoadDemo, isLoading }) {
               boxShadow: "0 20px 50px -12px rgba(0, 0, 0, 0.7)",
             }}
           >
-            {/* Quick commute situation presets */}
-            <div style={{ marginBottom: "18px" }}>
-              <div
-                style={{
-                  fontSize: "0.75rem",
-                  fontWeight: 700,
-                  textTransform: "uppercase",
-                  letterSpacing: "0.06em",
-                  color: "var(--text-subtle)",
-                  marginBottom: "8px",
-                }}
-              >
-                1. Select your commute window
-              </div>
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "repeat(auto-fit, minmax(130px, 1fr))",
-                  gap: "8px",
-                }}
-              >
-                {COMMUTE_PRESETS.map((p, idx) => (
-                  <button
-                    key={idx}
-                    type="button"
-                    onClick={() => handlePresetSelect(p)}
-                    disabled={isLoading}
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "8px",
-                      padding: "8px 10px",
-                      borderRadius: "var(--radius-sm)",
-                      background: "var(--bg-app)",
-                      border: "1px solid var(--border-subtle)",
-                      color: "var(--text-main)",
-                      fontSize: "0.82rem",
-                      fontWeight: 500,
-                      cursor: "pointer",
-                      textAlign: "left",
-                      transition: "all 0.2s ease",
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.borderColor = "var(--primary-amber)";
-                      e.currentTarget.style.backgroundColor = "var(--bg-card-elevated)";
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.borderColor = "var(--border-subtle)";
-                      e.currentTarget.style.backgroundColor = "var(--bg-app)";
-                    }}
-                  >
-                    <span style={{ fontSize: "1rem" }}>{p.icon}</span>
-                    <div>
-                      <div style={{ fontWeight: 600, fontSize: "0.8rem" }}>{p.label}</div>
-                      <div style={{ fontSize: "0.7rem", color: "var(--primary-amber)" }}>{p.time}</div>
-                    </div>
-                  </button>
-                ))}
-              </div>
-            </div>
-
             {/* Topic input form */}
-            <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+            <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "18px" }}>
               <div>
                 <label
                   htmlFor="hero-topic-input"
                   style={{
                     display: "block",
-                    fontSize: "0.75rem",
+                    fontSize: "0.85rem",
                     fontWeight: 700,
-                    textTransform: "uppercase",
-                    letterSpacing: "0.06em",
-                    color: "var(--text-subtle)",
-                    marginBottom: "8px",
+                    letterSpacing: "-0.01em",
+                    color: "var(--text-main)",
+                    marginBottom: "10px",
                   }}
                 >
-                  2. What do you want to master today?
+                  What topic do you want to learn today?
                 </label>
                 <div style={{ position: "relative" }}>
                   <input
