@@ -8,8 +8,8 @@ import ResultScreen from "../components/ResultScreen";
 import ErrorScreen from "../components/ErrorScreen";
 import { mockClarify, mockGenerateStream, DEMO_LESSON_DATA } from "../components/mockApi";
 
-// Master toggle flag requested: switch between mock layer and real API routes
-export const USE_MOCK = process.env.NEXT_PUBLIC_USE_MOCK === "true";
+// Master toggle flag: switched off to connect directly to real backend API routes
+export const USE_MOCK = false;
 
 export default function Home() {
   const [screen, setScreen] = useState("input"); // "input" | "questions" | "progress" | "result" | "error"

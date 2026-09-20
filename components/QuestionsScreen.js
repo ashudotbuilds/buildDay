@@ -42,13 +42,20 @@ export default function QuestionsScreen({
   const handleStartGeneration = () => {
     if (isGenerating) return;
 
+    const langMap = {
+      "en-IN-NeerjaNeural": "English",
+      "hi-IN-SwaraNeural": "Hindi",
+      "mr-IN-AarohiNeural": "Marathi",
+    };
+
     onGenerate({
       topic,
       level: answers[0] || questions[0]?.options?.[0] || "Beginner",
       goal: answers[1] || questions[1]?.options?.[0] || "Understand basics",
       angle: answers[2] || questions[2]?.options?.[0] || "General overview",
-      minutes: selectedDuration,
+      minutes: Number(selectedDuration),
       voice: selectedVoice,
+      language: langMap[selectedVoice] || "English",
     });
   };
 
