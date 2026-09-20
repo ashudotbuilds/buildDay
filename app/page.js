@@ -5,6 +5,7 @@ import InputScreen from "../components/InputScreen";
 import QuestionsScreen from "../components/QuestionsScreen";
 import ProgressScreen from "../components/ProgressScreen";
 import ResultScreen from "../components/ResultScreen";
+import ErrorScreen from "../components/ErrorScreen";
 import { mockClarify, mockGenerateStream, DEMO_LESSON_DATA } from "../components/mockApi";
 
 // Master toggle flag requested: switch between mock layer and real API routes
@@ -134,8 +135,23 @@ export default function Home() {
     }
   };
 
-  // Handle Load Demo Lesson
-  const handleLoadDemo = () => {
+  // Handle Load Demo Lesson (plays demo1.mp3 and shows demo1.json)
+  const handleLoadDemo = async () => {
+    try {
+      const res = await fetch("/demo/demo1.json");
+      if (res.ok) {
+        const data = await res.json();
+        setLessonResult({
+          ...data,
+          audioUrl: data.audioUrl || "/demo/demo1.mp3",
+        });
+        setTopic(data.topic || "How do vaccines work");
+        setScreen("result");
+        return;
+      }
+    } catch (e) {
+      console.warn("Failed to load /demo/demo1.json, using fallback object:", e);
+    }
     setLessonResult(DEMO_LESSON_DATA);
     setTopic(DEMO_LESSON_DATA.topic);
     setScreen("result");
@@ -182,19 +198,11 @@ export default function Home() {
       )}
 
       {screen === "error" && (
-        <div className="glass-panel" style={{ padding: "24px", borderColor: "var(--accent-rose)" }}>
-          <h3 style={{ fontSize: "1.2rem", fontWeight: 700, color: "var(--accent-rose)" }}>Error</h3>
-          <p style={{ fontSize: "0.9rem", color: "var(--text-muted)", marginTop: "6px" }}>
-            {errorMsg}
-          </p>
-          <button
-            className="btn-secondary"
-            onClick={() => setScreen("input")}
-            style={{ marginTop: "16px" }}
-          >
-            Try Again
-          </button>
-        </div>
+        <ErrorScreen
+          message={errorMsg}
+          onTryAgain={() => setScreen("input")}
+          onLoadDemo={handleLoadDemo}
+        />
       )}
     </div>
   );
