@@ -15,8 +15,18 @@ export async function POST(request) {
   }
 
   try {
-    return Response.json(await clarify(body.topic.trim()));
-  } catch {
-    return Response.json({ error: "clarify_failed" }, { status: 502 });
+    const result = await clarify(body.topic.trim());
+    return Response.json(result);
+  } catch (error) {
+    console.error("POST /api/clarify error:", error);
+    const message = error?.message || "clarify_failed";
+    return Response.json(
+      {
+        error: message.includes("apiKey")
+          ? "Missing ANTHROPIC_API_KEY in environment variables."
+          : message,
+      },
+      { status: 502 }
+    );
   }
 }
