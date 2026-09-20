@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import InputScreen from "../components/InputScreen";
+import QuestionsScreen from "../components/QuestionsScreen";
 import { mockClarify, DEMO_LESSON_DATA } from "../components/mockApi";
 
 // Master toggle flag requested: switch between mock layer and real API routes
@@ -67,17 +68,31 @@ export default function Home() {
       )}
 
       {screen === "questions" && (
+        <QuestionsScreen
+          topic={topic}
+          questions={questions}
+          onBack={() => setScreen("input")}
+          onGenerate={(params) => {
+            // Task 4 will transition to progress screen
+            console.log("Generate requested with params:", params);
+            setScreen("progress");
+          }}
+          isGenerating={false}
+        />
+      )}
+
+      {screen === "progress" && (
         <div className="glass-panel" style={{ padding: "24px" }}>
-          <h3 style={{ fontSize: "1.2rem", fontWeight: 700 }}>Questions Screen (Task 3 preview)</h3>
+          <h3 style={{ fontSize: "1.2rem", fontWeight: 700 }}>Progress Screen Preview</h3>
           <p style={{ fontSize: "0.9rem", color: "var(--text-muted)", marginTop: "6px" }}>
-            Loaded {questions.length} clarifying questions for: <strong>"{topic}"</strong>
+            Ready for Task 4
           </p>
           <button
             className="btn-secondary"
-            onClick={() => setScreen("input")}
+            onClick={() => setScreen("questions")}
             style={{ marginTop: "16px" }}
           >
-            &larr; Back to Topic
+            &larr; Back to Questions
           </button>
         </div>
       )}
