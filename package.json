@@ -1,0 +1,37 @@
+{
+  "name": "buildday",
+  "version": "1.0.0",
+  "private": true,
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ashudotbuilds/buildDay.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ashudotbuilds/buildDay/issues"
+  },
+  "homepage": "https://github.com/ashudotbuilds/buildDay#readme",
+  "description": "",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.127.0",
+    "next": "^16.3.5",
+    "node-edge-tts": "^1.2.10",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.6.1",
+    "postcss": "^8.5.28",
+    "tailwindcss": "^4.3.3"
+  }
+}

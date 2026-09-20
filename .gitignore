@@ -1,0 +1,6 @@
+.env.local
+node_modules/
+.next/
+out/
+public/out/*.mp3
+public/demo/*.mp3node_modules
