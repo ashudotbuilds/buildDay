@@ -11,7 +11,16 @@ export async function GET(_request, { params }) {
   }
 
   try {
-    const audio = await fs.readFile(path.resolve(config.outputDirectory, id));
+    let audio;
+    try {
+      audio = await fs.readFile(path.resolve(config.outputDirectory, id));
+    } catch {
+      try {
+        audio = await fs.readFile(path.join(os.tmpdir(), "commuteclass-out", id));
+      } catch {
+        audio = await fs.readFile(path.join(os.tmpdir(), "out", id));
+      }
+    }
     return new Response(audio, {
       headers: {
         "Content-Type": "audio/mpeg",
