@@ -4,6 +4,7 @@ import { useState } from "react";
 import InputScreen from "../components/InputScreen";
 import QuestionsScreen from "../components/QuestionsScreen";
 import ProgressScreen from "../components/ProgressScreen";
+import ResultScreen from "../components/ResultScreen";
 import { mockClarify, mockGenerateStream, DEMO_LESSON_DATA } from "../components/mockApi";
 
 // Master toggle flag requested: switch between mock layer and real API routes
@@ -169,19 +170,15 @@ export default function Home() {
       )}
 
       {screen === "result" && (
-        <div className="glass-panel" style={{ padding: "24px" }}>
-          <h3 style={{ fontSize: "1.2rem", fontWeight: 700 }}>Result Preview</h3>
-          <p style={{ fontSize: "0.9rem", color: "var(--text-muted)", marginTop: "6px" }}>
-            Lesson: <strong>{lessonResult?.topic}</strong>
-          </p>
-          <button
-            className="btn-secondary"
-            onClick={() => setScreen("input")}
-            style={{ marginTop: "16px" }}
-          >
-            &larr; Start New Lesson
-          </button>
-        </div>
+        <ResultScreen
+          lesson={lessonResult}
+          onNewLesson={() => {
+            setScreen("input");
+            setTopic("");
+            setQuestions([]);
+            setLessonResult(null);
+          }}
+        />
       )}
 
       {screen === "error" && (
