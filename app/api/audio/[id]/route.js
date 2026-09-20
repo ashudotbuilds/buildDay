@@ -1,5 +1,6 @@
 import fs from "node:fs/promises";
 import path from "node:path";
+import { config } from "../../../../lib/config.mjs";
 
 export const runtime = "nodejs";
 
@@ -10,7 +11,7 @@ export async function GET(_request, { params }) {
   }
 
   try {
-    const audio = await fs.readFile(path.resolve("public/out", id));
+    const audio = await fs.readFile(path.resolve(config.outputDirectory, id));
     return new Response(audio, {
       headers: {
         "Content-Type": "audio/mpeg",
