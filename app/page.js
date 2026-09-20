@@ -3,7 +3,8 @@
 import { useState } from "react";
 import InputScreen from "../components/InputScreen";
 import QuestionsScreen from "../components/QuestionsScreen";
-import { mockClarify, DEMO_LESSON_DATA } from "../components/mockApi";
+import ProgressScreen from "../components/ProgressScreen";
+import { mockClarify, mockGenerateStream, DEMO_LESSON_DATA } from "../components/mockApi";
 
 // Master toggle flag requested: switch between mock layer and real API routes
 export const USE_MOCK = true;
@@ -15,6 +16,8 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const [lessonResult, setLessonResult] = useState(null);
+  const [currentStage, setCurrentStage] = useState("researching");
+  const [selectedMinutes, setSelectedMinutes] = useState(5);
 
   // Handle topic submit from InputScreen
   const handleTopicSubmit = async (enteredTopic) => {
@@ -50,6 +53,86 @@ export default function Home() {
     }
   };
 
+  // Handle start generation (streaming)
+  const handleGenerate = async (params) => {
+    setSelectedMinutes(params.minutes);
+    setCurrentStage("researching");
+    setScreen("progress");
+    setErrorMsg("");
+
+    if (USE_MOCK) {
+      await mockGenerateStream(
+        params,
+        (stage) => setCurrentStage(stage),
+        (result) => {
+          setLessonResult({ ...result, topic: params.topic, minutes: params.minutes });
+          setScreen("result");
+        },
+        (err) => {
+          setErrorMsg(err);
+          setScreen("error");
+        }
+      );
+      return;
+    }
+
+    // Real API streaming route connection (Task 7 contract)
+    try {
+      const response = await fetch("/api/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(params),
+      });
+
+      if (!response.ok) {
+        const errJson = await response.json().catch(() => ({}));
+        throw new Error(errJson.error || `Generation failed (${response.status})`);
+      }
+
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = "";
+
+      while (true) {
+        const { value, done } = await reader.read();
+        if (done) break;
+        buffer += decoder.decode(value, { stream: true });
+
+        const lines = buffer.split("\n");
+        buffer = lines.pop() || "";
+
+        let currentEvent = null;
+        for (const line of lines) {
+          const trimmed = line.trim();
+          if (trimmed.startsWith("event:")) {
+            currentEvent = trimmed.replace("event:", "").trim();
+          } else if (trimmed.startsWith("data:")) {
+            const dataStr = trimmed.replace("data:", "").trim();
+            if (!dataStr) continue;
+            try {
+              const data = JSON.parse(dataStr);
+              if (currentEvent === "progress" && data.stage) {
+                setCurrentStage(data.stage);
+              } else if (currentEvent === "done") {
+                setLessonResult({ ...data, topic: params.topic, minutes: params.minutes });
+                setScreen("result");
+              } else if (currentEvent === "error") {
+                throw new Error(data.message || `Error during ${data.stage || "generation"}`);
+              }
+            } catch (jsonErr) {
+              if (currentEvent === "error") throw jsonErr;
+              console.warn("Failed to parse event JSON:", dataStr);
+            }
+          }
+        }
+      }
+    } catch (err) {
+      console.error("Streaming error:", err);
+      setErrorMsg(err.message || "Failed to generate lesson audio");
+      setScreen("error");
+    }
+  };
+
   // Handle Load Demo Lesson
   const handleLoadDemo = () => {
     setLessonResult(DEMO_LESSON_DATA);
@@ -72,29 +155,17 @@ export default function Home() {
           topic={topic}
           questions={questions}
           onBack={() => setScreen("input")}
-          onGenerate={(params) => {
-            // Task 4 will transition to progress screen
-            console.log("Generate requested with params:", params);
-            setScreen("progress");
-          }}
+          onGenerate={handleGenerate}
           isGenerating={false}
         />
       )}
 
       {screen === "progress" && (
-        <div className="glass-panel" style={{ padding: "24px" }}>
-          <h3 style={{ fontSize: "1.2rem", fontWeight: 700 }}>Progress Screen Preview</h3>
-          <p style={{ fontSize: "0.9rem", color: "var(--text-muted)", marginTop: "6px" }}>
-            Ready for Task 4
-          </p>
-          <button
-            className="btn-secondary"
-            onClick={() => setScreen("questions")}
-            style={{ marginTop: "16px" }}
-          >
-            &larr; Back to Questions
-          </button>
-        </div>
+        <ProgressScreen
+          currentStage={currentStage}
+          topic={topic}
+          minutes={selectedMinutes}
+        />
       )}
 
       {screen === "result" && (
