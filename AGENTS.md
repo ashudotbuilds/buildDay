@@ -7,7 +7,7 @@ add tool-specific notes.
 
 ## Goal
 
-Build, in a 6-hour buildathon, a Next.js app that turns "topic + time
+Build, in a 1-hour buildathon, a Next.js app that turns "topic + time
 available" into a personalised, source-backed audio lesson. Full context:
 see `PRD.md`. Full API contract: see `API_SPEC.md`. Exact model prompts to
 use verbatim: see `PROMPTS.md`. Live task list: see `TASKS.md`.
@@ -120,3 +120,13 @@ The two halves connect only through the API contract in `API_SPEC.md` — if
 that contract needs to change, update the doc first so both people stay in
 sync, since B can (and should) build the UI against mocked responses while
 A gets the real pipeline working.
+
+<!-- BEGIN:nextjs-agent-rules -->
+
+# This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+
+<!-- END:nextjs-agent-rules -->
