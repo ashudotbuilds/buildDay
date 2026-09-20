@@ -27,7 +27,9 @@ export default function QuestionsScreen({
   });
 
   const [selectedDuration, setSelectedDuration] = useState(5);
-  const [selectedVoice, setSelectedVoice] = useState("en-IN-NeerjaNeural");
+  const [selectedVoice, setSelectedVoice] = useState(
+    process.env.NEXT_PUBLIC_DEFAULT_TTS_VOICE || "en-IN-NeerjaNeural",
+  );
 
   const handleSelectOption = (qIndex, option) => {
     setAnswers((prev) => {
@@ -163,7 +165,9 @@ export default function QuestionsScreen({
       <div className="glass-panel" style={{ padding: "16px" }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px" }}>
           <label style={{ fontSize: "0.9rem", fontWeight: 600 }}>Available Time</label>
-          <span style={{ fontSize: "0.78rem", color: "var(--text-subtle)" }}>~150 words/min</span>
+          <span style={{ fontSize: "0.78rem", color: "var(--text-subtle)" }}>
+            ~{process.env.NEXT_PUBLIC_LESSON_WORDS_PER_MINUTE || 150} words/min
+          </span>
         </div>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "8px" }}>
           {DURATION_OPTIONS.map((item) => {

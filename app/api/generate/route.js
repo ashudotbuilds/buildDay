@@ -1,9 +1,10 @@
 import path from "node:path";
 import { generateLesson } from "../../../lib/pipeline.mjs";
+import { config } from "../../../lib/config.mjs";
 
 export const runtime = "nodejs";
 
-const allowedMinutes = new Set([3, 5, 10]);
+const allowedMinutes = new Set(config.allowedMinutes);
 
 const progressEvent = (stage, payload = {}) =>
   `event: ${stage === "done" ? "done" : "progress"}\ndata: ${JSON.stringify(
@@ -38,8 +39,8 @@ export async function POST(request) {
           goal: body.goal || "Quick overview",
           angle: body.angle || "The science/mechanism",
           minutes: Number(body.minutes),
-          voice: body.voice || "en-IN-NeerjaNeural",
-          language: body.language || "English",
+          voice: body.voice || config.defaultVoice,
+          language: body.language || config.defaultLanguage,
           onProgress: (stage) => {
             currentStage = stage;
             if (stage !== "done") send(progressEvent(stage));
