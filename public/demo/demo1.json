@@ -1,0 +1,19 @@
+{
+  "topic": "How do vaccines work",
+  "minutes": 3,
+  "level": "Beginner",
+  "goal": "Understand how it actually works",
+  "angle": "The science/mechanism",
+  "script": "Welcome to your 3-minute CommuteClass briefing on how vaccines work.\n\nThink of your immune system like a high-tech security operation. Every day, it monitors trillions of cells for rogue invaders. When a completely novel virus or bacteria slips into the body, your defenses are caught flat-footed because they don't know the intruder's signature. It can take days to figure out the right molecular key to neutralize it, during which time you get sick.\n\nVaccines solve this by giving your immune system advance intelligence without the risk of disease. Traditional vaccines introduced a weakened or deadened version of the bug. Modern platforms, such as mRNA vaccines, deliver temporary instructions teaching your cells how to make a single, harmless surface protein of the germ.\n\nYour immune system spots this foreign protein immediately. It unleashes dendritic cells to inspect it and alerts helper T-cells, which command B-cells to build precision antibodies. Once the drill is complete, the mRNA or harmless protein dissolves away. What stays behind are memory B and T cells.\n\nIf the real virus ever dares to enter your body months or years later, these memory cells awaken within minutes, pumping out thousands of antibodies per second to wipe out the virus before it takes hold. That is the genius of immunological memory—training today to protect tomorrow.",
+  "sources": [
+    {
+      "title": "World Health Organization: Vaccines and Immunization",
+      "url": "https://www.who.int/news-room/feature-stories/detail/how-do-vaccines-work"
+    },
+    {
+      "title": "CDC: Immunity and Vaccines Explained",
+      "url": "https://www.cdc.gov/vaccines/basics/work.html"
+    }
+  ],
+  "audioUrl": "/demo/demo1.mp3"
+}
